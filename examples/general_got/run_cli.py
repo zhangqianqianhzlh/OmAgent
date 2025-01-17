@@ -13,14 +13,6 @@ from agent.input_interface.input_interface import InputInterfaceGot
 # from omagent_core.advanced_components.workflow.dnc.workflow import DnCWorkflow
 from omagent_core.advanced_components.workflow.general_got.workflow import GoTWorkflow
 
-
-
-import os
-os.environ['custom_openai_endpoint'] = 'http://121.52.244.250:3000/v1'
-os.environ['custom_openai_key'] = 'sk-iytCHBhtNvAhtxeBC8E5A71e473c45C1B9847b6bB2F6461b'
-os.environ['bing_api_key'] = '573bfabb7359487b90b8f8d26a4f6fc5'
-os.environ['custom_openai_text_encoder_key'] = 'sk-2fpMc0GBGTGG96w62cF7B9621bA34aDa8b2112D26404Ae4e'
-
 # Initialize logging
 logging.init_logger("omagent", "omagent", level="INFO")
 

@@ -14,11 +14,6 @@ from omagent_core.clients.devices.programmatic.client import ProgrammaticClient
 from agent.input_interface.input_interface import InputInterfaceGot
 from omagent_core.advanced_components.workflow.general_got.workflow import GoTWorkflow
 
-import os
-os.environ['custom_openai_endpoint'] = 'http://121.52.244.250:3000/v1'
-os.environ['custom_openai_key'] = 'sk-iytCHBhtNvAhtxeBC8E5A71e473c45C1B9847b6bB2F6461b'
-os.environ['bing_api_key'] = '573bfabb7359487b90b8f8d26a4f6fc5'
-os.environ['custom_openai_text_encoder_key'] = 'sk-2fpMc0GBGTGG96w62cF7B9621bA34aDa8b2112D26404Ae4e'
 
 # Initialize logging
 logging.init_logger("omagent", "omagent", level="INFO")
@@ -46,20 +41,20 @@ programmatic_client = ProgrammaticClient(processor=workflow, config_path=config_
 
 # Prepare batch processing inputs
 
-#sort example
-# workflow_input_list = [
-#     {"query": "[6, 3, 6, 5, 1, 2, 4, 3, 8, 0, 7, 8, 6, 4, 9, 5, 2, 4, 8, 4, 4, 4, 5, 6, 8, 4, 7, 7, 8, 9, 4, 9]", "task": "sort", "meta": None}
-# ]
+# sort example
+workflow_input_list = [
+    {"query": "[6, 3, 6, 5, 1, 2, 4, 3, 8, 0, 7, 8, 6, 4, 9, 5, 2, 4, 8, 4, 4, 4, 5, 6, 8, 4, 7, 7, 8, 9, 4, 9]", "task": "sort", "meta": None}
+]
 
 #keyword_count example
 # workflow_input_list = [
 #     {"query": "One evening, Sarah, an archaeologist from Norway made a surprising discovery about ancient trade routes between Sweden and Norway. As per her research, the artifacts that were found in Norway were identical to those in Sweden, indicating a deep-rooted cultural connection between Sweden and Norway. This piqued the interest of her colleague, James, who was from Canada.", "task": "keyword_count", "meta": {'all_possible_countries': ["Norway", "Sweden", "Canada"]}}
 # ]
     
-#set_intersection example
-workflow_input_list = [
-    {"query": '{"set1": [11, 60, 1, 49, 21, 33, 14, 56, 54, 15, 23, 40, 45, 22, 7, 28, 20, 46, 51, 6, 34, 37, 3, 50, 17, 8, 25, 0, 35, 47, 18, 19], "set2": [31, 11, 4, 63, 38, 58, 59, 24, 61, 14, 32, 39, 27, 46, 48, 19, 52, 57, 50, 56, 3, 2, 53, 29, 5, 37, 62, 41, 36, 12, 49, 16]}', "task": "set_intersection", "meta": None}
-]
+# #set_intersection example
+# workflow_input_list = [
+#     {"query": '{"set1": [11, 60, 1, 49, 21, 33, 14, 56, 54, 15, 23, 40, 45, 22, 7, 28, 20, 46, 51, 6, 34, 37, 3, 50, 17, 8, 25, 0, 35, 47, 18, 19], "set2": [31, 11, 4, 63, 38, 58, 59, 24, 61, 14, 32, 39, 27, 46, 48, 19, 52, 57, 50, 56, 3, 2, 53, 29, 5, 37, 62, 41, 36, 12, 49, 16]}', "task": "set_intersection", "meta": None}
+# ]
 # Process questions in batches
 res = programmatic_client.start_batch_processor(workflow_input_list=workflow_input_list)
 

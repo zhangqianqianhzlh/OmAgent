@@ -114,7 +114,6 @@ class OpenaiGPTLLM(BaseLLM):
                 messages=messages,
                 temperature=kwargs.get("temperature", self.temperature),
                 max_tokens=kwargs.get("max_tokens", self.max_tokens),
-                response_format=kwargs.get("response_format", self.response_format),
                 tools=kwargs.get("tools", None),
                 tool_choice=kwargs.get("tool_choice", None),
                 stream=kwargs.get("stream", self.stream),
