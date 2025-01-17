@@ -64,7 +64,6 @@ class TaskSplitter(BaseLLMBackend, BaseWorker):
                 ),
             ]
         task_tree = TaskTree()
-        print(query)
         if task is not None and task != "":
             self.special_task = task
         if meta is not None and meta != {}:
