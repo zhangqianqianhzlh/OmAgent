@@ -48,13 +48,18 @@ class KeepBestN(BaseLLMBackend, BaseWorker):
         3. Selects the top N nodes from each task group based on scores
         4. Creates new nodes for the next phrase using the selected nodes
         
-        TODO: Add evaluation using LLM
         
         Returns:
             dict: Contains the updated task tree structure
         """
-        query = self.stm(self.workflow_instance_id)['query']
-        task_tree = self.stm(self.workflow_instance_id)['task_tree']
+        # if not split, we will not generate task and response directly. So check if response is None. If not, we will skip the got process and move to the final refine phrase.
+        try:
+            response = self.stm(self.workflow_instance_id)['response']
+            self.callback.info(agent_id=self.workflow_instance_id, progress="Select best n nodes is not processed as we did't use got process", message="")
+            return {'got_structure': self.stm(self.workflow_instance_id)['task_tree'].model_dump()}
+        except:
+            query = self.stm(self.workflow_instance_id)['query']
+            task_tree = self.stm(self.workflow_instance_id)['task_tree']
 
         
         current_nodes = []
@@ -62,13 +67,14 @@ class KeepBestN(BaseLLMBackend, BaseWorker):
         for id in task_tree.leaves:
             node = task_tree.get_node(id)
             can_be_executed = task_tree.is_node_can_be_executed(id)
+            print(node.phrase, self.stm(self.workflow_instance_id)['phrase'], can_be_executed)
             if node.phrase == self.stm(self.workflow_instance_id)['phrase'] and can_be_executed:
                 current_nodes.append(node)
                 task_groups[node.task] = task_groups.get(node.task, []) + [node]
         
         assert all(
             node.scored for node in current_nodes
-        ), "Not all thoughts have been scored"
+        ), "Not all nodes have been scored"
         
         for key in task_groups.keys():
             task_groups[key].sort(key=lambda x: x.score, reverse=self.higher_is_better)
@@ -85,7 +91,7 @@ class KeepBestN(BaseLLMBackend, BaseWorker):
         self.stm(self.workflow_instance_id)['task_tree'] = task_tree
         self.stm(self.workflow_instance_id)['phrase'] = self.stm(self.workflow_instance_id)['phrase'] + 1
 
-        self.callback.info(agent_id=self.workflow_instance_id, progress="Select best n nodes finished", message=new_node['current_task_input'])
+        self.callback.info(agent_id=self.workflow_instance_id, progress="Select best n nodes finished", message=new_node)
         return {'got_structure': task_tree.model_dump()}
 
 
